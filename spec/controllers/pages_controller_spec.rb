@@ -1,11 +1,17 @@
 require 'spec_helper'
 
 describe PagesController do
-
+  render_views
+  #says get operation for the home action
   describe "GET 'home'" do
-    it "should be successful" do
-      get 'home'
+    it "should be successful" do #
+      get 'home'  #first line that matters to
       response.should be_success
+    end
+    it "should have right title" do
+      get 'home'
+      response.should have_selector("title",
+                                    :content=> "Ruby on Rails Tutorial Sample App | Home")
     end
   end
 
@@ -13,6 +19,23 @@ describe PagesController do
     it "should be successful" do
       get 'contact'
       response.should be_success
+    end
+    it "should have right title" do
+      get 'contact'
+      response.should have_selector("title",
+                                    :content=> "Ruby on Rails Tutorial Sample App | Contact")
+    end
+  end
+
+  describe "GET 'about' " do
+    it "should be successful" do
+      get 'about'
+      response.should be_success
+    end
+    it "should have right title" do
+      get 'about'
+      response.should have_selector("title",
+                                    :content=> "Ruby on Rails Tutorial Sample App | About")
     end
   end
 
