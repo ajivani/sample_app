@@ -5,12 +5,28 @@ gem 'rails', '3.0.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+#group :development, :test do
+    #gem "webrat"
+    #gem 'rspec', '2.0.0.beta.20'
+    #gem 'rspec-rails', '2.0.0.beta.20'
+ #   gem "rspec-rails", ">= 2.0.0.beta.22" 
+  #  gem "webrat", ">= 0.7.2.beta.1" 
+   # gem 'sqlite3-ruby', '1.3.1', :require => 'sqlite3'
+#end
+
+
 group :development do
-  gem 'rspec-rails', '2.0.0.beta.18'
+  #gem "rspec", ">= 2.0.0.beta.22" 
+  #gem "rspec-rails", ">= 2.0.0.beta.22" 
+  #gem "webrat", ">= 0.7.2.beta.1i   
+  gem "webrat"
+  gem 'rspec-rails', '2.0.0.beta.20'
   gem 'sqlite3-ruby', '1.3.1', :require => 'sqlite3'
 end
 group :test do
-  gem 'rspec', '2.0.0.beta.18'
+  gem "webrat"
+  gem 'rspec', '2.0.0.beta.20'
+
   gem 'sqlite3-ruby', '1.3.1', :require => 'sqlite3'
 end
 

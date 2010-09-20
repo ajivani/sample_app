@@ -1,8 +1,19 @@
 SampleApp::Application.routes.draw do
+
+  
+  root :to=>'pages#home'
+  match '/about', :to=>'pages#about'
+  match '/contact', :to=>'pages#contact'
+  match '/help', :to=> 'pages#help'
+  match '/home', :to=> 'pages#home'
+  match '/away', :controller=> 'pages', :action=> 'away check the routes.rb file lolz'
   get "pages/help"
   get "pages/about"
   get "pages/home"
   get "pages/contact"
+
+
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
