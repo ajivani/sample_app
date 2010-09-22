@@ -11,4 +11,8 @@ module ApplicationHelper
   def title2
     "#{self}"
   end
+  def logo
+    logo = image_tag("logo.png", :alt=>"Sample App", :class=>"round")
+  end
+
 end

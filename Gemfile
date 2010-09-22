@@ -22,6 +22,7 @@ group :development do
   gem "webrat"
   gem 'rspec-rails', '2.0.0.beta.20'
   gem 'sqlite3-ruby', '1.3.1', :require => 'sqlite3'
+  gem 'annotate-models', '1.0.4'
 end
 group :test do
   gem "webrat"

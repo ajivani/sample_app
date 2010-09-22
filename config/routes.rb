@@ -1,8 +1,7 @@
 SampleApp::Application.routes.draw do
-
-  
+  resources :users
   root :to=>'pages#home'
-  #match '/signup' makes a signup_path variable with "/about" as the string value
+  #match '/signup' makes a signup_path variable with "/signup" as the string value
   match '/signup', :to=>'users#new'
   match '/about', :to=>'pages#about'
   match '/contact', :to=>'pages#contact'
@@ -13,7 +12,7 @@ SampleApp::Application.routes.draw do
   get "pages/about"
   get "pages/home"
   get "pages/contact"
-  get "users/new"
+  #get "users/new" #don't need it since we added 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
