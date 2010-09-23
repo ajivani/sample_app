@@ -1,1 +1,15 @@
-<%=@user.name%>, <%= @user.email %>
+<table class="profile" summary="Profile Information">
+  <tr>
+    <td class="main">
+      <h1>
+        <%= gravatar_for @user, :size=>50 %>
+        <%= @user.name %>
+      </h1>
+    </td>
+    <td class="sidebar round">
+      <strong>Name</strong> <%=@user.name%><br />
+      <strong>URL</strong>  <%= link_to user_path(@user), @user%> <%#same as saying user_path(@user), can also do a :controller=>'something' , :action=>'action' %>
+    </td>
+  </tr>
+</table>
+  
