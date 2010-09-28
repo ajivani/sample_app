@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
   attr_accessor :password #we need to be accept password and password confirmation as part of the signup process, we'll add that to our accessible attributes
   attr_accessible :name, :email, :password, :password_confirmation #equivalent to saying attr_accessible(:name, :email)
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-
   validates :name, :presence=> true,
                     :length=>{ :maximum => 50 }
   validates :email, :presence=> true,
@@ -28,16 +27,20 @@ class User < ActiveRecord::Base
   def has_password?(submitted_password)
     self.encrypted_password == encrypt(submitted_password) #in a mmethod def, self is just the object ie probably ameen or some other user 
   end
+  #returns user if email and password match
   def self.authenticate(email_given, submitted_password)
     user = User.find_by_email(email_given)
     return nil if user.nil? #no email
     return user if user.has_password?(submitted_password) #correct
     nil #wrong password
   end
-
+  def self.authenticate_with_salt(user_id, cookie_salt)
+    user = User.find_by_id(user_id)
+    (user && user.salt == cookie_salt)? user : nil
+  end
   private
   def encrypt_password
-    self.salt = make_salt if new_record? #this way user is created once and only when the user is first created
+    self.salt = make_salt if new_record? #this way the salt is created once and only when the user is first created
     self.encrypted_password = encrypt(password)
   end
   def encrypt(string)
@@ -49,7 +52,4 @@ class User < ActiveRecord::Base
   def secure_hash(string)
     Digest::SHA2.hexdigest(string)
   end
-  
-
-
 end

@@ -6,8 +6,15 @@
   <ul>
       <! about_path created when you do match '/about' in the routes.rb file> 
       <li><%= link_to "Home", root_path %></li>
+      <%if signed_in? %>
+        <li> <%=link_to "Profile", current_user %></li> <!rails figures out the path when we give it a restful user >
+      <%end%>
       <li><%= link_to "Help", help_path %></li>
-      <li><%= link_to "Sign in", '#' %></li>
+      <% if signed_in? %>
+        <li><%= link_to "Sign out", signout_path, :method=>:delete %> </li>
+      <%else%>
+        <li><%= link_to "Sign in", signin_path %></li>
+      <%end%>
     </ul>
   </nav>
 </header>

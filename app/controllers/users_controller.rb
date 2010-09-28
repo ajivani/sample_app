@@ -12,11 +12,13 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       flash[:success] = 'Welcome to the Sample App!'
+      sign_in @user
       redirect_to @user #user_path(@user)
     else
       @title = "Sign up"
-      render 'new' #render works for actions
-                  #as well as partials 
+      @user.password = ''
+      @user.password_confirmation = ''
+      render 'new' #render works for actions #as well as partials 
     end
   end
 
