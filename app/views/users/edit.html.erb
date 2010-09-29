@@ -1,7 +1,7 @@
-<h1>Sign Up</h1>
-
+<h1>Edit user - <%="#{@user.name}"%></h1>
+<!it knows to edit users and update them because @user.new_record? == false, if it were true it'd do a post request with the create method>
 <%= form_for(@user) do |f| %>
-  <%= render 'shared/error_messages', :object => f.object %><!print f.object and you see it's a user object><! :object = f.object line creates a variable called object in the error_message partial, that object (partial) has the value of f.object, which is a user in this case >
+  <%= render 'shared/error_messages', :object=>f.object %>
   <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name %>
@@ -19,7 +19,13 @@
     <%= f.password_field :password_confirmation %>
   </div>
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit "Update" %>
   </div>
 <% end %>
+
+<div>
+  <%= gravatar_for @user %>
+  <a href="http://gravatar.com/emails">change</a>
+</div>
+
 

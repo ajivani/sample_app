@@ -56,8 +56,14 @@ describe SessionsController do
       controller.should_not be_signed_in
       response.should redirect_to(root_path)
     end
-
   end #delete destroy
+
+  describe "PUT 'update'" do 
+    before(:each) do
+      @user = Factory(:user)
+      test_sign_in(@user)
+    end
+  end#put update
 
 
 end

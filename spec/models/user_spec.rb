@@ -96,7 +96,23 @@ describe User do
         sammy_j.should == @default_user
       end
     end
-
   end #has_password? 
+
+  describe "admin attribute" do
+    before(:each) do
+      @a_user = User.create!(@attr)
+    end
+    it "should respond to  admin" do
+      @user.should respond_to(:admin)
+    end
+    it "should not be admin by default" do
+      @user.should_not be_admin
+    end
+    it "shold be convertible to admin" do
+      @user.toggle!(:admin)
+      @user.should be_admin
+    end
+  end #admin attribute
+
 
 end #user

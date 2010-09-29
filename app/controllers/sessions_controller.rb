@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     else
       @title = user.name
       sign_in user
-      redirect_to user_path(user)
+      redirect_back_or(user)# redirect_to user_path(user)
     end
   end
   def destroy

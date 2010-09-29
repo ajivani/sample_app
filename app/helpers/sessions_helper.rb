@@ -8,8 +8,10 @@ module SessionsHelper
     #cookies.delete(:remember_token)
     session[:user_info] = nil
     self.current_user = nil #use self.current_user = nil if the first line doesn't work for tests, since self refers to the controller
-  end
-  
+  end  
+  def current_user?(user)
+    current_user == user
+  end  
   def current_user=(user)
     @current_user = user
   end
@@ -20,6 +22,20 @@ module SessionsHelper
   end
   def signed_in?
    !current_user.nil?
+  end
+  def deny_access 
+    store_location #added this line everytime we deny access to a path
+    redirect_to signin_path, :notice=>"Please sign in to access this page"
+  end
+  def store_location
+    session[:return_to] = request.fullpath
+  end
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    clear_return_to
+  end
+  def clear_return_to
+    session[:return_to] = nil
   end
   
   private 
