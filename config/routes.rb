@@ -3,7 +3,9 @@ SampleApp::Application.routes.draw do
 
   resources :users
   resources :sessions, :only=>[:new,:create,:destroy]
+  resources :microposts, :only=>[:create, :destroy]
   root :to=>'pages#home'
+
   #match '/signup' makes a signup_path variable with "/signup" as the string value
   match '/signup', :to=>'users#new'
   match '/signin', :to=>'sessions#new'

@@ -1,24 +1,8 @@
 <h1>Sign Up</h1>
 
 <%= form_for(@user) do |f| %>
-  <%= render 'shared/error_messages', :object => f.object %><!print f.object and you see it's a user object><! :object = f.object line creates a variable called object in the error_message partial, that object (partial) has the value of f.object, which is a user in this case >
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
-  </div>
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm Password" %><br />
-    <%= f.password_field :password_confirmation %>
-  </div>
   <div class="actions">
+    <%= render 'fields', :f=>f%>
     <%= f.submit "Sign up" %>
   </div>
 <% end %>

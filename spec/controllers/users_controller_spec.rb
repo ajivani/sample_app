@@ -31,6 +31,15 @@ describe UsersController do
       get :show, :id=>@user
       response.should have_selector("h1>img", :class=>'gravatar')
     end
+    it 'show the users microposts' do 
+      mp1 = Factory(:micropost, :user=>@user, :content=>"the first post i'm writing!")
+      mp2 = Factory(:micropost, :user=>@user, :content=>'some second post')
+      mp3 = Factory(:micropost, :user=>@user, :content=>'some third post')
+      get :show, :id=>@user
+      #response.should have_selector("span.content", :content=>mp1.content)
+      response.should have_selector("span.content", :content=>mp2.content)
+      response.should have_selector("span.content", :content=>mp3.content)
+    end
   end #GET show
 
 
@@ -253,7 +262,7 @@ describe "PUT 'update'" do
     end
     describe "as a non-signed in user" do
       it "should deny access" do
-        p "xxxxxxxxxxxxxxxxxxxx",@user, @user.admin?,"xxxxxxxxxxxxxx"
+        #p "xxxxxxxxxxxxxxxxxxxx",@user, @user.admin?,"xxxxxxxxxxxxxx"
         delete :destroy, :id=>@user
         response.should redirect_to(signin_path)
       end
@@ -264,11 +273,19 @@ describe "PUT 'update'" do
         delete :destroy, :id=>@user
         response.should redirect_to(root_path)
       end
+      it "should not be able to see the delete links" do
+        get :index
+        response.should_not have_selector("a", :content=>"delete")
+      end
     end
     describe "as an admin user" do
       before(:each) do
-        admin = Factory(:user, :email=>"admin@example.com", :admin=>true)
-        test_sign_in(admin)
+        @admin_user = Factory(:user, :email=>"admin@example.com", :admin=>true)
+        test_sign_in(@admin_user)
+      end
+      it "should be able to see delete links" do
+        get :index
+        response.should have_selector("a", :content=>"delete")
       end
       it "should destory the user" do
         lambda do
@@ -279,6 +296,16 @@ describe "PUT 'update'" do
         delete :destroy, :id=>@user
         response.should redirect_to(users_path)
       end 
+      it "shouldn't be able to delete itself" do
+        lambda do
+          delete :destroy, :id=>@admin_user
+        end.should change(User, :count).by(0)
+      end
+      it "should go back to the users page if admin tries to delete itself" do
+        delete :destroy, :id=>@admin_user
+        flash[:error].should=~ /Cannot delete self. You must pick a user other than yourself to delete./i
+        response.should redirect_to(users_path)
+      end
     end #admin
 
 

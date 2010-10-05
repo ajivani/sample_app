@@ -115,4 +115,46 @@ describe User do
   end #admin attribute
 
 
+  describe "micropost associations" do
+    before(:each) do
+     @user = User.create!(@attr)
+      @mp1 = Factory(:micropost, :user=>@user, :content=> 'newest post', :created_at => 1.day.ago)
+      @mp2 = Factory(:micropost, :user=>@user, :content=> 'oldest post', :created_at => 1.hour.ago)
+    end 
+    it "should have a micropost attribute" do
+      @user.should respond_to(:microposts)
+    end
+    it "should have the right microposts i!n teh right order" do
+      #p "**************************",@user.microposts,"**************************"
+      @user.microposts.should == [@mp2, @mp1]
+      @user.microposts.should_not == [@mp1,@mp2]
+  
+    end
+    it 'should destory associated microposts' do
+      @user.destroy
+      [@mp1,@mp2].each do |post|
+        Micropost.find_by_id(post.id).should be_nil
+      end
+    end
+    describe 'status feed' do
+      it 'should have a feed' do
+        @user.should respond_to(:feed)
+      end
+      it "should include the users microposts" do
+        @user.feed.include?(@mp1).should be_true
+        @user.feed.include?(@mp2).should be_true
+      end
+      it "should not include a different user's microposts" do
+        mp3 = Factory(:micropost, 
+                      :user=> Factory(:user, :email=> Factory.next(:email)))
+        @user.feed.include?(@mp3).should be_false
+      end
+
+
+    end #status feed
+  end #micropost assciation
+
+
+
+
 end #user

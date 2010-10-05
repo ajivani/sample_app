@@ -23,6 +23,9 @@ module SessionsHelper
   def signed_in?
    !current_user.nil?
   end
+  def authenticate
+    deny_access unless signed_in?
+  end
   def deny_access 
     store_location #added this line everytime we deny access to a path
     redirect_to signin_path, :notice=>"Please sign in to access this page"
@@ -47,4 +50,5 @@ module SessionsHelper
     session[:user_info] || [nil,nil]
     #cookies.signed[:remember_token] || [nil,nil]
   end
+
 end
