@@ -18,7 +18,13 @@ class User < ActiveRecord::Base
   attr_accessor :password #we need to be accept password and password confirmation as part of the signup process, we'll add that to our accessible attributes
   #this is very important, sets what the user can be edited through the web -- that's why we didn't put admin here, or else a user could just use the console to toggle the admin attribute
   attr_accessible :name, :email, :password, :password_confirmation #equivalent to saying attr_accessible(:name, :email)
-  has_many :microposts, :dependent=> :destroy
+  has_many :microposts, :dependent=> :destroy #user.microposts  #has_many :microposts, :foreign_key=>'user_id', :dependent=> :destroy
+  has_many :relationships, :foreign_key=> 'follower_id', :dependent=>:destroy #user.follower
+  has_many :following, :through=>:relationships, :source=> :followed #user.following
+  has_many :reverse_relationships,  :foreign_key=>'followed_id',
+                                    :class_name=>'Relationship',
+                                    :dependent=>:destroy
+  has_many :followers, :through=>:reverse_relationships, :source=>:follower
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :name, :presence=> true,
@@ -31,10 +37,22 @@ class User < ActiveRecord::Base
                         :confirmation => true,
                         :length => {:within => 6..40 }
   before_save :encrypt_password
+  #scope example
+  scope :admin, where(:admin=>true) #would give the
+  
 
-
+  def following?(some_followed_user)
+    self.relationships.find_by_followed_id(some_followed_user) #self is user
+  end
+  def unfollow!(user_to_unfollow)
+    rel = relationships.find_by_followed_id(user_to_unfollow)
+    rel.destroy
+  end
+  def follow!(user_to_follow)
+    relationships.create!(:followed_id => user_to_follow.id) #build would return a relationships object create saves it int he database in one step
+  end
   def feed 
-    Micropost.where("user_id = ?", id) #self.id where self is the user
+    Micropost.from_users_followed_by(self)  #Micropost.where("user_id = ?", id) #self.id where self is the user
   end
   #Return true if the user's password matches the submitted password.
   def has_password?(submitted_password)

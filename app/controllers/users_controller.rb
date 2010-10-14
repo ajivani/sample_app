@@ -1,8 +1,23 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :only=>[:index,:edit,:update,:destroy]
+  #order matters on before filters
+  before_filter :authenticate, :except=>[:show, :new, :create] #before_filter :authenticate, :only=>[:index,:edit,:update,:destroy, :following, :followers]
   before_filter :correct_user, :only=>[:edit,:update]
   before_filter :admin_user, :only => :destroy
-  before_filter :already_signed_in, :only=>[:new, :create]
+  before_filter :already_signed_in, :only=>[:new, :create]  
+  #before_filter :authenticate, :except=>[:show, :new, :create] #order matters...the correct_user before filter is applied first here, so this never even gets applied, if you move it up then it will be applied
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])  
+    @users = @user.following.paginate(:page=> params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(:page=>params[:page])
+    render 'show_follow'
+  end
 
   def destroy
     user = User.find(params[:id])

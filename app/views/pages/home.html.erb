@@ -1,22 +1,5 @@
 <% if signed_in? %>
-  <table class="front" summary="For signed-in users">
-    <tr>
-      <td class="main">
-        <h1 class='micropost'> What's up? </h1>
-        <%= render 'shared/micropost_form' %>
-        <%= render :partial=>'shared/feed' %>
-      </td>
-      <td class="sidebar round">
-        <%= render 'shared/user_info' %>
-      </td>
-    </tr>
-  </table>
+  <%= render :partial=>'shared/signed_in_user_home_page' %> 
 <% else %>
-  <h1>Sample App</h1>
-  <p>
-    This is the homepage for a twitter like tutorial, log in too see what you can do
-    <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
-    sample application.
-  </p>
-  <%= link_to "Sign up now!", signup_path, :class=>"signup_button round" %>
+  <%= render :partial=>'shared/default_home_page' %> 
 <% end %>

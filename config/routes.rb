@@ -1,10 +1,18 @@
 SampleApp::Application.routes.draw do
   get "sessions/new"
 
-  resources :users
+  #users/1/following #following_user_path(1) #followers_user_path(1)
+  resources :users do
+    member do
+      get :following, :followers 
+    end
+  end
   resources :sessions, :only=>[:new,:create,:destroy]
   resources :microposts, :only=>[:create, :destroy]
+  resources :relationships, :only=>[:create, :destroy]
   root :to=>'pages#home'
+
+
 
   #match '/signup' makes a signup_path variable with "/signup" as the string value
   match '/signup', :to=>'users#new'
@@ -76,4 +84,14 @@ SampleApp::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
+  #
+  #
+  #resouces :users do
+  #collection do
+  #get :tigers
+  #end
+  #end
+  ##this would give us URL/users/tigers
+  #
+  #
 end

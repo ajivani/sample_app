@@ -1,0 +1,5 @@
+<!--form_for manipulates an existing Relationship model object (called rel for example)...rel will have a id, a followed_id, a follower_id, a created_at, a updated_at -->
+<%= form_for current_user.relationships.find_by_followed_id(@user.id),  :html=> { :method=>:delete }, 
+                                                                        :remote=>true do |f| %>
+  <div class="actions"><%= f.submit "Unfollow" %></div>
+<% end %>

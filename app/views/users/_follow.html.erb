@@ -1,0 +1,13 @@
+<!--use form_for to manimpulate a Relationship model object - this one builds a new relationship object-->
+<%= form_for  current_user.relationships.build(:followed_id=>@user.id, :follower_id=>current_user.id),
+              :remote=>true do |f| %>
+  <div><%= f.hidden_field :followed_id %></div>
+  <div class="actions"><%= f.submit "Follow" %></div>
+<%end%>
+
+
+
+<!-- try this out -->
+<!-- add a hidden file dfor the follower_id, in hte build add a :follower_id=>current_user.id - then change the relationships controlloer to find a @user based on the id or some random field--> 
+<!--<= form_for  current_user.relationships.build(:followed_id=>@user.id, :follower_id=>current_user.id) do |f| %>
+  <div>< = f.hidden_field :follower_id %></div>-->
