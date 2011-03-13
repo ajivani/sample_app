@@ -37,16 +37,13 @@ class Micropost < ActiveRecord::Base
   scope :from_users_followed_by, lambda { |user| followed_by(user) }
 
   private
-    #return a sql condition for users followed by the given user.
-    #include the users own id as well
-    def self.followed_by(user)
+  def self.followed_by(user)
+    #return a sql condition for users followed by the given user.  #include the users own id as well def self.followed_by(user)
       followed_ids = %(SELECT followed_id FROM relationships
                        WHERE follower_id = :user_id)
       where("user_id IN (#{followed_ids}) OR user_id = :user_id", 
             {:user_id => user})
     end
-
-
 end
 
 #the where is the same as saying
